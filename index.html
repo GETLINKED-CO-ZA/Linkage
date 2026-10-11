@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#7b1c1c">
+  <title>Reader’s Voice | The Linkage Magazine</title>
+  <meta name="description" content="Share your voice with The Linkage Magazine. Tell us what you thought of a story and optionally upload a photo with your magazine.">
+  <style>
+    :root {
+      --red: #7b1c1c;
+      --green: #1b7b61;
+      --gold: #d4af37;
+      --ink: #211d1a;
+      --muted: #6c655f;
+      --paper: #f8f5ed;
+      --line: rgba(98,74,65,.18);
+      --white: #fffefa;
+      --shadow: 0 22px 70px rgba(47,30,24,.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; color: var(--ink);
+      background:
+        radial-gradient(ellipse at 8% 8%, rgba(212,175,55,.13), transparent 32rem),
+        radial-gradient(ellipse at 95% 55%, rgba(27,123,97,.08), transparent 30rem),
+        var(--paper);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      min-height: 100vh;
+    }
+    .topline { height: 5px; background: linear-gradient(90deg,var(--red) 0 34%,var(--gold) 34% 67%,var(--green) 67%); }
+    .wrap { width: min(1100px, calc(100% - 36px)); margin: 0 auto; }
+    header { padding: 24px 0 20px; border-bottom: 1px solid var(--line); }
+    .header-inner { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+    .brand { display:flex; align-items:center; gap:14px; min-width:0; }
+    .logo-frame {
+      width: 180px; height: 64px; display:flex; align-items:center; justify-content:flex-start;
+      overflow:hidden; flex-shrink:0;
+    }
+    .logo-frame img { max-width:100%; max-height:100%; object-fit:contain; display:none; }
+    .logo-placeholder { color:var(--red); font-family: Georgia,serif; font-size:25px; letter-spacing:-1.4px; line-height:.95; }
+    .logo-placeholder span { display:block; color:var(--green); font-family:Arial,sans-serif; font-size:9px; letter-spacing:3px; margin-top:7px; }
+    .brand-note { border-left:1px solid var(--line); padding-left:14px; color:var(--muted); font-size:11px; line-height:1.5; letter-spacing:1.4px; text-transform:uppercase; }
+    .edition { font-size:11px; color:var(--muted); text-align:right; letter-spacing:1.5px; text-transform:uppercase; }
+    .edition strong { display:block; color:var(--red); font-size:13px; margin-top:5px; }
+    main { padding: 52px 0 70px; }
+    .hero { display:grid; grid-template-columns: 1fr .88fr; gap:42px; align-items:center; margin-bottom:38px; }
+    .eyebrow { color:var(--green); text-transform:uppercase; font-weight:800; letter-spacing:3px; font-size:11px; display:flex; align-items:center; gap:10px; }
+    .eyebrow:before { content:""; width:30px; height:2px; background:var(--gold); }
+    h1 { font-family: Georgia, "Times New Roman", serif; font-size:clamp(42px, 6vw, 72px); line-height:.98; font-weight:500; letter-spacing:-2.8px; margin:19px 0 20px; }
+    h1 em { color:var(--red); font-style:normal; }
+    .intro { max-width:530px; color:#5f5852; font-size:17px; line-height:1.75; margin:0; }
+    .quote-card {
+      position:relative; border:1px solid rgba(123,28,28,.12); border-radius:24px;
+      padding:30px; background:rgba(255,254,250,.72); box-shadow:var(--shadow); overflow:hidden;
+    }
+    .quote-card:after { content:"“"; position:absolute; right:22px; top:-32px; font:170px Georgia,serif; color:rgba(212,175,55,.18); }
+    .quote-card p { position:relative; z-index:1; font:italic 23px/1.4 Georgia,serif; margin:0 0 18px; }
+    .quote-card small { color:var(--green); font-weight:800; text-transform:uppercase; letter-spacing:1.6px; font-size:10px; }
+    .form-shell { display:grid; grid-template-columns: minmax(0,1fr) 280px; gap:24px; align-items:start; }
+    .form-card, .side-card { background:var(--white); border:1px solid var(--line); border-radius:22px; box-shadow:0 12px 38px rgba(47,30,24,.06); }
+    .form-card { padding:clamp(22px,4vw,42px); }
+    .section-heading { display:flex; gap:14px; align-items:flex-start; margin-bottom:28px; }
+    .step { width:37px; height:37px; border-radius:50%; display:grid; place-items:center; background:#f4e9e6; color:var(--red); font-family:Georgia,serif; font-size:19px; flex-shrink:0; }
+    h2 { margin:0 0 7px; font:500 29px Georgia,serif; letter-spacing:-.7px; }
+    .subheading { margin:0; color:var(--muted); font-size:13px; line-height:1.6; }
+    .fields { display:grid; grid-template-columns:1fr 1fr; gap:19px; }
+    .field { display:flex; flex-direction:column; gap:8px; }
+    .field.full { grid-column:1/-1; }
+    label { font-size:12px; color:#433b36; font-weight:750; letter-spacing:.2px; }
+    label .optional { color:#928982; font-weight:500; }
+    input[type=text], input[type=number], textarea {
+      width:100%; border:1px solid #ddd4cc; background:#fffefa; color:var(--ink); border-radius:11px;
+      padding:14px 15px; font:15px inherit; outline:none; transition:border-color .2s, box-shadow .2s;
+    }
+    input:focus, textarea:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(27,123,97,.1); }
+    input::placeholder, textarea::placeholder { color:#aaa19a; }
+    .upload-zone { border:1.5px dashed #c8bdb3; border-radius:15px; background:#fcfaf5; padding:22px; text-align:center; transition:background .2s,border-color .2s; }
+    .upload-zone.drag { border-color:var(--green); background:#eef7f2; }
+    .upload-icon { width:43px; height:43px; display:grid; place-items:center; border-radius:13px; background:#e9f3ee; color:var(--green); margin:0 auto 12px; font-size:22px; }
+    .upload-zone p { margin:0 0 6px; font-size:13px; font-weight:750; }
+    .upload-zone small { color:var(--muted); font-size:11px; line-height:1.5; display:block; }
+    .file-button { display:inline-flex; margin-top:14px; padding:10px 15px; border-radius:8px; border:1px solid #c8bdb3; background:white; color:var(--ink); font-size:12px; font-weight:750; cursor:pointer; }
+    #photo { position:absolute; width:1px; height:1px; opacity:0; overflow:hidden; }
+    .preview { display:none; margin-top:15px; text-align:left; align-items:center; gap:13px; }
+    .preview img { width:66px; height:66px; object-fit:cover; border-radius:10px; border:1px solid var(--line); }
+    .preview-name { font-size:12px; font-weight:750; overflow-wrap:anywhere; }
+    .preview-meta { font-size:11px; color:var(--muted); margin-top:5px; }
+    .remove-file { margin-left:auto; border:0; background:transparent; color:var(--red); font-weight:750; cursor:pointer; }
+    .privacy { display:flex; align-items:flex-start; gap:10px; margin:22px 0 18px; color:var(--muted); font-size:11px; line-height:1.6; }
+    .privacy input { accent-color:var(--green); margin-top:3px; }
+    .submit-row { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+    .submit { appearance:none; border:0; background:var(--red); color:white; border-radius:10px; padding:15px 22px; font-size:13px; font-weight:800; letter-spacing:.3px; cursor:pointer; box-shadow:0 7px 17px rgba(123,28,28,.18); transition:transform .2s,background .2s; }
+    .submit:hover { background:#641515; transform:translateY(-1px); }
+    .submit:disabled { opacity:.6; cursor:wait; transform:none; }
+    .fineprint { color:#928982; font-size:10px; line-height:1.5; max-width:240px; }
+    .status { display:none; margin-top:18px; border-radius:10px; padding:13px 15px; font-size:13px; line-height:1.5; }
+    .status.success { display:block; color:#155d45; background:#eaf6ef; border:1px solid #cce8d7; }
+    .status.error { display:block; color:#842626; background:#fbefed; border:1px solid #f0d2cd; }
+    .side-card { padding:24px; margin-bottom:15px; }
+    .side-card h3 { font:500 21px Georgia,serif; margin:0 0 12px; }
+    .side-card p { font-size:12px; line-height:1.7; color:var(--muted); margin:0; }
+    .side-card.green { background:var(--green); color:white; border:0; }
+    .side-card.green p { color:rgba(255,255,255,.82); }
+    .side-card.green h3 { color:white; }
+    .side-number { color:var(--gold); font:italic 32px Georgia,serif; margin-bottom:13px; }
+    .rule { height:1px; background:var(--line); margin:20px 0; }
+    footer { border-top:1px solid var(--line); padding:21px 0 30px; color:var(--muted); font-size:10px; letter-spacing:1px; text-transform:uppercase; }
+    .footer-inner { display:flex; justify-content:space-between; gap:16px; }
+    .footer-inner strong { color:var(--red); }
+    @media (max-width:780px) {
+      .hero { grid-template-columns:1fr; gap:24px; margin-bottom:25px; }
+      .quote-card { padding:23px; }
+      .quote-card p { font-size:20px; }
+      .form-shell { grid-template-columns:1fr; }
+      .side-column { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+      .side-card { margin:0; }
+      .brand-note { display:none; }
+      .logo-frame { width:150px; }
+    }
+    @media (max-width:520px) {
+      .wrap { width:calc(100% - 24px); }
+      header { padding:16px 0; }
+      .edition { font-size:9px; letter-spacing:.7px; }
+      .edition strong { font-size:11px; }
+      main { padding:34px 0 45px; }
+      h1 { font-size:47px; }
+      .intro { font-size:15px; }
+      .fields { grid-template-columns:1fr; }
+      .field.full { grid-column:auto; }
+      .side-column { grid-template-columns:1fr; }
+      .form-card { padding:22px 17px; }
+      .footer-inner { flex-direction:column; }
+      .submit-row { align-items:stretch; flex-direction:column; }
+      .submit { width:100%; }
+      .fineprint { max-width:none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header>
+    <div class="wrap header-inner">
+      <div class="brand">
+        <div class="logo-frame" aria-label="The Linkage Magazine logo">
+          <img id="brandLogo" src="/assets/linkage-logo.png" alt="The Linkage Magazine logo">
+          <div id="logoFallback" class="logo-placeholder">THE LINKAGE<span>BY LINK</span></div>
+        </div>
+        <div class="brand-note">Real stories.<br>Real people. Real connection.</div>
+      </div>
+      <div class="edition">A community publication<strong>Reader’s Voice · Share your story</strong></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">The Linkage Magazine</div>
+        <h1>Your voice.<br>Our <em>community.</em></h1>
+        <p class="intro">Which story stayed with you? Share your thoughts with us and become part of the conversation behind the pages. If you’d like, upload a photo of yourself with your copy of The Linkage.</p>
+      </div>
+      <div class="quote-card">
+        <p>Every story connects us to someone, somewhere, in a way we might not expect.</p>
+        <small>Reader’s Voice · The Linkage</small>
+      </div>
+    </section>
+
+    <section class="form-shell">
+      <div class="form-card">
+        <div class="section-heading">
+          <div class="step">01</div>
+          <div><h2>Share your voice</h2><p class="subheading">Fill in the details below. A photo is completely optional.</p></div>
+        </div>
+        <form id="readerForm">
+          <div class="fields">
+            <div class="field">
+              <label for="firstName">Name</label>
+              <input id="firstName" name="firstName" type="text" placeholder="Your first name" autocomplete="given-name" maxlength="80" required>
+            </div>
+            <div class="field">
+              <label for="surname">Surname</label>
+              <input id="surname" name="surname" type="text" placeholder="Your surname" autocomplete="family-name" maxlength="80" required>
+            </div>
+            <div class="field">
+              <label for="age">Age</label>
+              <input id="age" name="age" type="number" placeholder="Your age" min="1" max="120" inputmode="numeric" required>
+            </div>
+            <div class="field">
+              <label for="story">Favourite story <span class="optional">(optional)</span></label>
+              <input id="story" name="story" type="text" placeholder="A person, story or issue…" maxlength="160">
+            </div>
+            <div class="field full">
+              <label for="comment">What would you like to say? <span class="optional">(optional)</span></label>
+              <textarea id="comment" name="comment" rows="3" maxlength="1200" placeholder="Tell us what stood out, inspired you or made you think…"></textarea>
+            </div>
+            <div class="field full">
+              <label for="photo">Photo with your magazine <span class="optional">(optional)</span></label>
+              <div class="upload-zone" id="uploadZone">
+                <div class="upload-icon">↑</div>
+                <p>Have a photo to share?</p>
+                <small>Choose a JPG, PNG or WebP image. Maximum file size: 3 MB.</small>
+                <label class="file-button" for="photo">Choose a photo</label>
+                <input id="photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp">
+                <div class="preview" id="preview">
+                  <img id="previewImage" alt="Your selected photo preview">
+                  <div><div class="preview-name" id="previewName"></div><div class="preview-meta" id="previewMeta"></div></div>
+                  <button type="button" class="remove-file" id="removePhoto">Remove</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <label class="privacy"><input type="checkbox" id="consent" required><span>I confirm these details are accurate and agree that LINK may review my submission for The Linkage Magazine. I understand that sending a submission does not guarantee publication. If my photo or words are selected for publication, LINK may contact me to confirm permission.</span></label>
+          <div class="submit-row">
+            <button class="submit" id="submitButton" type="submit">Submit my voice <span aria-hidden="true">↗</span></button>
+            <div class="fineprint">Your submission is sent to The Linkage editorial team for review. Please only upload a photo you have permission to share.</div>
+          </div>
+          <div class="status" id="status" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+
+      <aside class="side-column">
+        <div class="side-card green">
+          <div class="side-number">01 / 03</div>
+          <h3>Stories bring us together.</h3>
+          <p>Your perspective helps us celebrate the people, ideas and everyday moments shaping our community.</p>
+        </div>
+        <div class="side-card">
+          <h3>What happens next?</h3>
+          <p>Your entry goes to the editorial inbox. The team can review it and contact you if more information or publication permission is needed.</p>
+          <div class="rule"></div>
+          <h3>Photo optional</h3>
+          <p>No photo? No problem. You can still submit your details and thoughts.</p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <footer><div class="wrap footer-inner"><span><strong>The Linkage Magazine</strong> · An initiative of LINK</span><span>www.getlinked.co.za</span></div></footer>
+
+  <script>
+    // Add your permanent logo to the GitHub repository at: assets/linkage-logo.png
+    const logo = document.getElementById('brandLogo');
+    logo.addEventListener('load', () => { logo.style.display = 'block'; document.getElementById('logoFallback').style.display = 'none'; });
+    logo.addEventListener('error', () => { logo.style.display = 'none'; document.getElementById('logoFallback').style.display = 'block'; });
+
+    const form = document.getElementById('readerForm');
+    const photoInput = document.getElementById('photo');
+    const preview = document.getElementById('preview');
+    const previewImage = document.getElementById('previewImage');
+    const statusBox = document.getElementById('status');
+    const submitButton = document.getElementById('submitButton');
+    const uploadZone = document.getElementById('uploadZone');
+    let selectedPhoto = null;
+    let photoDataUrl = null;
+
+    function showStatus(message, type) {
+      statusBox.className = 'status ' + type;
+      statusBox.textContent = message;
+    }
+    function formatSize(bytes) { return bytes < 1024 * 1024 ? Math.round(bytes / 1024) + ' KB' : (bytes / (1024 * 1024)).toFixed(2) + ' MB'; }
+    function handleFile(file) {
+      if (!file) return;
+      const allowed = ['image/jpeg', 'image/png', 'image/webp'];
+      if (!allowed.includes(file.type)) { showStatus('Please choose a JPG, PNG or WebP image.', 'error'); photoInput.value = ''; return; }
+      if (file.size > 3 * 1024 * 1024) { showStatus('That photo is larger than 3 MB. Please choose a smaller image.', 'error'); photoInput.value = ''; return; }
+      selectedPhoto = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        photoDataUrl = reader.result;
+        previewImage.src = photoDataUrl;
+        document.getElementById('previewName').textContent = file.name;
+        document.getElementById('previewMeta').textContent = formatSize(file.size);
+        preview.style.display = 'flex';
+        statusBox.className = 'status';
+      };
+      reader.readAsDataURL(file);
+    }
+    photoInput.addEventListener('change', () => handleFile(photoInput.files[0]));
+    document.getElementById('removePhoto').addEventListener('click', () => {
+      selectedPhoto = null; photoDataUrl = null; photoInput.value = ''; preview.style.display = 'none'; previewImage.removeAttribute('src');
+    });
+    ['dragenter','dragover'].forEach(evt => uploadZone.addEventListener(evt, e => { e.preventDefault(); uploadZone.classList.add('drag'); }));
+    ['dragleave','drop'].forEach(evt => uploadZone.addEventListener(evt, e => { e.preventDefault(); uploadZone.classList.remove('drag'); }));
+    uploadZone.addEventListener('drop', e => { if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      statusBox.className = 'status';
+      if (!form.reportValidity()) return;
+      const payload = {
+        firstName: document.getElementById('firstName').value.trim(),
+        surname: document.getElementById('surname').value.trim(),
+        age: Number(document.getElementById('age').value),
+        story: document.getElementById('story').value.trim(),
+        comment: document.getElementById('comment').value.trim(),
+        consent: document.getElementById('consent').checked,
+        photo: photoDataUrl ? {
+          name: selectedPhoto.name,
+          type: selectedPhoto.type,
+          data: photoDataUrl.split(',')[1]
+        } : null
+      };
+      submitButton.disabled = true;
+      submitButton.textContent = 'Sending your submission…';
+      try {
+        const response = await fetch('/api/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(result.error || 'We could not send your submission right now. Please try again later.');
+        form.reset();
+        selectedPhoto = null; photoDataUrl = null; preview.style.display = 'none'; previewImage.removeAttribute('src');
+        showStatus('Thank you for sharing your voice. Your submission has been sent to The Linkage editorial team.', 'success');
+      } catch (error) {
+        showStatus(error.message || 'Something went wrong. Please try again later.', 'error');
+      } finally {
+        submitButton.disabled = false;
+        submitButton.innerHTML = 'Submit my voice <span aria-hidden="true">↗</span>';
+      }
+    });
+  </script>
+</body>
+</html>
